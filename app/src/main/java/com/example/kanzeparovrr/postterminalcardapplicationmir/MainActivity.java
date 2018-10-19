@@ -74,6 +74,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 6;
+    private static final String TAG = MainActivity.class.getSimpleName();
     private NfcAdapter mAdapter;
     private PendingIntent mPendingIntent;
     private String token = "";
@@ -286,16 +287,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
             @Override
             public void onResponse(final Call call, Response response) throws IOException {
-                try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
-                    token = jsonObject.toString();
-                    token = new JSONObject(token).getString("token");
+                /*try {
+                    String result = response.body().string();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        token = jsonObject.toString();
+                        token = new JSONObject(token).getString("token");
+
+                    } catch (JSONException e) {
+                        Log.e(TAG, result, e);
+                    }
+                }catch (IOException e) {
+                    Log.e(TAG, "error opening file", e);
+                }*/
             }
         });
     }

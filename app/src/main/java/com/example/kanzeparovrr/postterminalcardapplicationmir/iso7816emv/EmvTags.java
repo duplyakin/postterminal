@@ -320,7 +320,7 @@ public final class EmvTags {
 	public static final ITag DRDOL_RELATED_DATA = new TagImpl("df8113", TagValueTypeEnum.BINARY, "DRDOL Related Data", "");
 	public static final ITag REFERENCE_CONTROL_PARAMETER = new TagImpl("df8114", TagValueTypeEnum.BINARY, "Reference Control Parameter", "");
 	public static final ITag ERROR_INDICATION = new TagImpl("df8115", TagValueTypeEnum.BINARY, "Error Indication", "");
-	public static final ITag USER_INTERFACE_REQUEST_DATA = new TagImpl("df8116", TagValueTypeEnum.BINARY, "User Interface Request Data", "");
+	public static final ITag USER_INTERFACE_REQUEST_DATA = new TagImpl("df8116", TagValueTypeEnum.BINARY, "HLUser Interface Request Data", "");
 	public static final ITag CARD_DATA_INPUT_CAPABILITY = new TagImpl("df8117", TagValueTypeEnum.BINARY, "Card Data Input Capability", "");
 	public static final ITag CMV_CAPABILITY_CMV_REQUIRED = new TagImpl("df8118", TagValueTypeEnum.BINARY, "CVM Capability - CVM Required", "");
 	public static final ITag CMV_CAPABILITY_NO_CMV_REQUIRED = new TagImpl("df8119", TagValueTypeEnum.BINARY, "CVM Capability - No CVM Required", "");
