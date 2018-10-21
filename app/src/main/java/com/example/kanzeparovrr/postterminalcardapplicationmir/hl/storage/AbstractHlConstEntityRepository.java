@@ -1,20 +1,18 @@
 package com.example.kanzeparovrr.postterminalcardapplicationmir.hl.storage;
 
 
+import com.example.kanzeparovrr.postterminalcardapplicationmir.hl.HLProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.ByteString;
-import com.sbt.test.entities.User;
-import com.sbt.test.hl.HLProvider;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.text.StringEscapeUtils;
+
+//import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.*;
 import org.hyperledger.fabric.sdk.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.annotation.Nullable;
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -23,23 +21,23 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractHlConstEntityRepository<T extends HLEntity> implements HLConstEntityRepository<T> {
 
     protected final ObjectMapper mapper = new ObjectMapper().enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.NON_FINAL, "clazz");
-    @Getter
-    private final JpaRepository<T, Long> jpaRepository;
+    /*@Getter
+    private final JpaRepository<T, Long> jpaRepository;*/
     @Getter
     private final HLProvider hlProvider;
     @Getter
     private final Class<T> entityClass;
 
-    @Autowired
-    protected AbstractHlConstEntityRepository(JpaRepository<T, Long> repo, HLProvider hlProvider, Class<T> entityClass) {
-        this.jpaRepository = repo;
+    //@Autowired
+    protected AbstractHlConstEntityRepository(/*JpaRepository<T, Long> repo, */HLProvider hlProvider, Class<T> entityClass) {
+        /*this.jpaRepository = repo;*/
         this.hlProvider = hlProvider;
         this.entityClass = entityClass;
     }
 
     @Override
     public @Nullable
-    T getFromHl(String hlEntityId, User user) throws EntityNotFoundException {
+    T getFromHl(String hlEntityId, User user) /*throws EntityNotFoundException */{
         try {
             HFClient hlClient = hlProvider.getClient(user);
             Channel channel = hlProvider.getChannel(hlClient);
@@ -93,10 +91,10 @@ public abstract class AbstractHlConstEntityRepository<T extends HLEntity> implem
         return null;
     }
 
-    @Override
+    /*@Override
     public T get(Long id) {
         return jpaRepository.getOne(id);
-    }
+    }*/
 
     @Override
     public T addToHl(T entity, User user) {
@@ -153,7 +151,7 @@ public abstract class AbstractHlConstEntityRepository<T extends HLEntity> implem
         } catch (TimeoutException e) {
             e.printStackTrace();
         }*/
-        jpaRepository.saveAndFlush(entity);
+        //jpaRepository.saveAndFlush(entity);
         return entity;
     }
 }

@@ -2,7 +2,6 @@ package com.example.kanzeparovrr.postterminalcardapplicationmir.hl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sbt.test.hl.HLEnrollment;
 import lombok.*;
 import org.hyperledger.fabric.sdk.Enrollment;
 
@@ -36,11 +35,11 @@ public class HLUser implements  Serializable,org.hyperledger.fabric.sdk.User {
     @JsonProperty("roles")
    // @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
    // @Singular
-    private Set<Role> springRoles;
+    private Set<String> springRoles;
 
-    @ElementCollection(targetClass = Privilege.class, fetch = FetchType.EAGER)
+    //@ElementCollection(targetClass = Privilege.class, fetch = FetchType.EAGER)
     @Singular
-    private Set<Privilege> privileges;
+    private Set<String> privileges;
 
     private String username;
 
@@ -63,13 +62,20 @@ public class HLUser implements  Serializable,org.hyperledger.fabric.sdk.User {
    // @OneToOne(optional = true, targetEntity = HLEnrollment.class, cascade = ALL)
     Enrollment enrollment;
 
-    @Override
+  /*  @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> result = new HashSet<>(getPrivileges());
         result.addAll(springRoles);
         return result;
+    }*/
+
+    @JsonIgnore
+    public Set<String> getAuthorities() {
+        return getAuthorities();
     }
+
+    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @JsonIgnore
     @Override
     public String getName() {
@@ -79,9 +85,7 @@ public class HLUser implements  Serializable,org.hyperledger.fabric.sdk.User {
     @JsonIgnore
     @Override
     public Set<String> getRoles() {
-        Set<String> result = new HashSet<>();
-        springRoles.forEach(role -> result.add(role.name()));
-        return result;
+        return springRoles;
     }
 
     @JsonIgnore

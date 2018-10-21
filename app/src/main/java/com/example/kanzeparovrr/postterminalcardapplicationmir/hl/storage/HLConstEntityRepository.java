@@ -1,11 +1,10 @@
 package com.example.kanzeparovrr.postterminalcardapplicationmir.hl.storage;
 
-import com.sbt.test.entities.User;
 
-import javax.persistence.EntityNotFoundException;
+import org.hyperledger.fabric.sdk.User;
 
 public interface HLConstEntityRepository<T extends HLEntity> {
-    T getFromHl(String hlEntityId, User user) throws EntityNotFoundException;
+    T getFromHl(String hlEntityId, User user) /*throws EntityNotFoundException*/;
     T get(Long id);
     T addToHl(T entity, User user);
 }

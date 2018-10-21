@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.hyperledger.fabric-sdk-java:fabric-sdk-java:1.1.0@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hyperledger.fabric-sdk-java/fabric-sdk-java/1.1.0/a139f1a02278ec2b68b44258591173f5688b57e5/fabric-sdk-java-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hyperledger.fabric-sdk-java/fabric-sdk-java/1.1.0/670ed900bcdd90561215e1da071d6ee775f6ca56/fabric-sdk-java-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,7 +1,6 @@
 package com.example.kanzeparovrr.postterminalcardapplicationmir;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -20,48 +19,44 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Parcelable;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kanzeparovrr.postterminalcardapplicationmir.hl.EntityRepository;
+import com.example.kanzeparovrr.postterminalcardapplicationmir.hl.HLEnrollment;
+import com.example.kanzeparovrr.postterminalcardapplicationmir.hl.HLProvider;
+import com.example.kanzeparovrr.postterminalcardapplicationmir.hl.storage.HLConstEntityRepository;
 import com.example.kanzeparovrr.postterminalcardapplicationmir.model.EmvCard;
-import com.example.kanzeparovrr.postterminalcardapplicationmir.navi.AsyncPost;
 import com.example.kanzeparovrr.postterminalcardapplicationmir.navi.Data;
-import com.example.kanzeparovrr.postterminalcardapplicationmir.navi.NaviOkhttp;
 import com.example.kanzeparovrr.postterminalcardapplicationmir.parser.EmvParser;
 import com.example.kanzeparovrr.postterminalcardapplicationmir.utils.Provider;
 
+import org.hyperledger.fabric.sdk.Enrollment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
+import entities.Entity;
+import entities.User;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -84,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private LocationManager locationManager;
     private String cardNumber = "";
     private String latitudeS = "";
+    private HLProvider provider;
+    private Entity entity;
 
     Location location;
     private String longS = "";
@@ -170,6 +167,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 creatNaveAc.callOnClick();
             }
         });
+
+        String hlclientCaUrl="http://35.228.170.202:7054";
+        provider = new HLProvider(hlclientCaUrl, "");
+        user1= getUser();
+        entity = new Entity();
+        entity.setValue("test1");
+        //;
+        writeToHl(entity);
+         //readFromHl();
 
     }
     @Override
@@ -585,6 +591,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         return result;
     }
 
+
     private void resolveIntent(Intent intent) throws IOException {
         String action = intent.getAction();
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
@@ -628,12 +635,60 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
                 msgs = new NdefMessage[] { msg };
                 mTags.add(tag);
+
+                //--------------------------------------------------------------------
+
+                //private HLConstEntityRepository service = new AbstractUserService();
+
+
+
+                //private final HLConstEntityRepository repo =
+
+
+
             }
             // Setup the views
 //            buildTagViews(msgs);
         }
     }
+    private User user1 ;
 
+
+    public static final String ADMIN = "admin";
+    public static final String AFFILIATION = "org1";
+    public static final String MSP = "Org1MSP";
+
+    private User getUser(){
+        Enrollment enrollment;
+        User user = User.builder()
+                .username(ADMIN)
+                .password("adminpw")
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                //.mspId("Org1")
+                .enabled(true)
+                .springRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER"))
+                .privileges(Arrays.asList("READ", "WRITE"))
+                .build();
+
+        try {
+            enrollment = provider.getCaClient().enroll(ADMIN, "adminpw");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+            user.setAffiliation(AFFILIATION);
+            user.setMspId(MSP);
+            user.setEnrollment(new HLEnrollment(enrollment));
+            return user;
+    }
+
+    void writeToHl(Entity entity){
+        HLConstEntityRepository<Entity> repo = new EntityRepository(provider, Entity.class);
+        Entity newEntity =repo.addToHl(entity, user1);
+        ///provider.
+    }
 
 
 

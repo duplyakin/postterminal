@@ -26,9 +26,9 @@ public class HLProvider {
     @Getter
     final private HFCAClient caClient;
 
-    private String peerUrl;
-    private String eventHubUrl;
-    private String ordererUrl;
+    private String peerUrl = "grpc://35.228.170.202:7051";
+    private String eventHubUrl = "grpc://35.228.170.202:7053";
+    private String ordererUrl = "grpc://35.228.170.202:7050";
     @SneakyThrows
     public HLProvider( String caUrl, String clientPropertiesFile ) {
         cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
@@ -64,7 +64,7 @@ public class HLProvider {
         this.ordererUrl=ordererUrl;
     }
 
-    public HFClient getClient(HLUser userContext) throws CryptoException, InvalidArgumentException {
+    public HFClient getClient(User userContext) throws CryptoException, InvalidArgumentException {
         HFClient client = HFClient.createNewInstance();
         client.setCryptoSuite(cryptoSuite);
         client.setUserContext(userContext);
